@@ -30,6 +30,22 @@ section at the end of this file).
 
 #ifndef TEENYMIDI_ENABLE_CUSTOM_USB_CFG
 
+//if cocomake7
+#if defined (AVR_CM)
+
+#define USB_CFG_IOPORTNAME      A
+#define USB_CFG_DMINUS_BIT      6
+#define USB_CFG_DPLUS_BIT       7
+
+//if teenyriot
+#elif defined (AVR_TEENYRIOT)
+
+#define USB_CFG_IOPORTNAME      B
+#define USB_CFG_DMINUS_BIT      5
+#define USB_CFG_DPLUS_BIT       3
+
+#else
+
 #if defined (__AVR_ATtiny44__) || defined (__AVR_ATtiny84__)
 #define USB_CFG_IOPORTNAME      B
 #define USB_CFG_DMINUS_BIT      1
@@ -54,6 +70,8 @@ section at the end of this file).
 #define USB_CFG_IOPORTNAME      D
 #define USB_CFG_DMINUS_BIT      3
 #define USB_CFG_DPLUS_BIT       2
+#endif
+
 #endif
 
 #endif
@@ -399,6 +417,19 @@ section at the end of this file).
 
 #ifndef TEENYMIDI_ENABLE_CUSTOM_DPLUS_INTERRUPT
 
+#if defined (AVR_CM)
+
+#define USB_INTR_CFG            PCMSK0
+#define USB_INTR_CFG_SET        (1 << USB_CFG_DPLUS_BIT)
+#define USB_INTR_CFG_CLR        0
+#define USB_INTR_ENABLE         GIMSK
+#define USB_INTR_ENABLE_BIT     PCIE0
+#define USB_INTR_PENDING        GIFR
+#define USB_INTR_PENDING_BIT    PCIF0
+#define USB_INTR_VECTOR         PCINT0_vect
+ 
+#elif defined (AVR_TEENYRIOT)
+
 #ifndef SIG_INTERRUPT0
 #define SIG_INTERRUPT0			_VECTOR(1)
 #endif
@@ -421,6 +452,8 @@ section at the end of this file).
 #define USB_INTR_PENDING        PCIFR
 #define USB_INTR_PENDING_BIT    PCIF1
 #define USB_INTR_VECTOR         PCINT1_vect
+#endif
+
 #endif
 
 #endif
