@@ -1,0 +1,3 @@
+[submodule "examples/BabyMidiCon"]
+	path = examples/BabyMidiCon
+	url = https://badgeek@github.com/ATtinyTeenageRiot/BabyconMidiUSB.git
