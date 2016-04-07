@@ -488,6 +488,31 @@ void receiveMIDI(unsigned char command, unsigned char pitch,unsigned char veloci
 
 }
 
+void sendHires(uint16_t value, uint8_t ch)
+{
+    uint8_t valH = value >> 3;
+    uint8_t valL = value & 0b0111;
+    this->send(MIDI_CONTROLCHANGE, ch+1, valH);
+    this->send(MIDI_CONTROLCHANGE, ch+2, valL);
+}
+
+void sendHires(int value, uint8_t ch)
+{
+    uint8_t valH, valL;
+
+    if (value < 0)
+    {
+        value = abs(value);
+        ch = ch + 2;
+    }
+
+    valH = value >> 3;
+    valL = value & 0b0111;
+
+    this->send(MIDI_CONTROLCHANGE, ch, valH);
+    this->send(MIDI_CONTROLCHANGE, ch+1, valL);
+
+}
 
   void update()
   {
